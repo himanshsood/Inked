@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Children } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
+  console.log("Hi")
   const [inputs, setInputs] = useState({
     username: "",
     email: "",
@@ -18,14 +19,18 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log("hi")
     e.preventDefault();
     try {
-      await axios.post("/auth/register", inputs);
+      await axios.post("http://localhost:8800/api/auth/register", inputs);
+
       navigate("/login");
     } catch (err) {
-      setError(err.response.data);
+      console.error("Error response:", err.response); // Debugging: Check what response contains
+      setError(err.response?.data?.message || "An unexpected error occurred.");
     }
   };
+  
 
   return (
     <div className="auth">
