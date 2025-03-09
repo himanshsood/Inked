@@ -27,29 +27,28 @@ const Write = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-  
+    const imgUrl = await upload();
+
     try {
-      if (state?.id) {
-        await axios.put(`/posts/${state.id}`, {
-          title,
-          desc: value,
-          cat,
-        });
-      } else {
-        await axios.post(`/posts/`, {
-          title,
-          desc: value,
-          cat,
-          date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-        });
-      }
-      navigate("/");
+      state
+        ? await axios.put(`/posts/${state.id}`, {
+            title,
+            desc: value,
+            cat,
+            img: file ? imgUrl : "",
+          })
+        : await axios.post(`/posts/`, {
+            title,
+            desc: value,
+            cat,
+            img: file ? imgUrl : "",
+            date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+          });
+          navigate("/")
     } catch (err) {
-      console.log("Error in submitting post:", err);
+      console.log(err);
     }
   };
-  
-  
 
   return (
     <div className="add">
